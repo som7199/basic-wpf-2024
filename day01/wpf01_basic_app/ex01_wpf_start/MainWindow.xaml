@@ -1,0 +1,13 @@
+﻿<Window x:Class="ex01_wpf_start.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ex01_wpf_start"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Button x:Name="BtnClick" Content="클릭" FontSize="36" FontFamily="Malgun Gothic Semilight" FontWeight="Bold" Click="BtnClick_Click"/>
+        
+    </Grid>
+</Window>

@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>images\controls.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="controls.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="images\controls.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="controls.png" />
+  </ItemGroup>
+
+</Project>
