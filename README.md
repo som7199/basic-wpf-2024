@@ -30,3 +30,10 @@ IoT 개발자 WPF 학습리포지토리
         - UI요소와(.xaml) 소스코드(.xaml.cs)의 데이터를 서로 연결하는 것
         - xaml : {Binding Path=속성, ElementName=객체, Mode=(OneWay|TwoWay), StringFormat={}{0:#,#}}
         - dataContext : 데이터를 담아서 전달하는 이름
+        - 전통적인 윈폼 코드 비하인드에서 데이터를 처리하는 것을 지양하기 위해 - 디자인, 개발 부분 분리
+        
+## 3일차
+- WPF 기본학습
+    - 데이터 바인딩 마무리
+    - 디자인 리소스
+- WPF MVVM
