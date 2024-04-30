@@ -1,0 +1,53 @@
+﻿<Page x:Class="ex04_wpf_bikeshop.SupportPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ex04_wpf_bikeshop"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="SupportPage" Loaded="Page_Loaded">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="180"/>     <!--화면을 아무리 크게 해도 (Grid.Column="1"에 있는)전송 버튼 사이즈가 180 그대로양!--> 
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="라이브 서포트" FontSize="20"
+               Background="Aqua" Grid.ColumnSpan="2"/>
+        
+        <ListBox Grid.Row="1" Grid.Column="0" Margin="10">
+            <Label Content="샘플"/>
+        </ListBox>
+
+        <ListBox x:Name="LsbBikes" Grid.Row="1" Grid.Column="1" Margin="10" 
+                 Background="AliceBlue" ItemsSource="{Binding}"
+                 SelectionChanged="LsbBikes_SelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="Speed" />
+                        <TextBlock Text="{Binding Path=Speed}" />
+                        <Slider Value="{Binding Path=Speed}" Maximum="100"/>
+                        <TextBlock Text="color" />
+                        <Border Height="20">
+                            <Border.Background>
+                                <SolidColorBrush Color="{Binding Path=Color}"/>
+                            </Border.Background>
+                        </Border>
+                        <TextBox Text="{Binding Path=Color}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <TextBox Grid.Row="2" Grid.Column="0" Margin="10" Text="메시지를 적으세요."/>
+        <Button Grid.Row="2" Grid.Column="1" Content="전송" Margin="10"/>
+    </Grid>
+</Page>
