@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ex06_caliburn_basic", "ex06_caliburn_basic\ex06_caliburn_basic.csproj", "{66F8C3BC-3D1E-49F3-9E03-651F6D9AD2B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ex07_EmployeeMngApp", "ex07_EmployeeMngApp\ex07_EmployeeMngApp.csproj", "{EAE90FD5-AAB6-4C22-BF21-EAF06D767B15}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{66F8C3BC-3D1E-49F3-9E03-651F6D9AD2B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66F8C3BC-3D1E-49F3-9E03-651F6D9AD2B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66F8C3BC-3D1E-49F3-9E03-651F6D9AD2B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66F8C3BC-3D1E-49F3-9E03-651F6D9AD2B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAE90FD5-AAB6-4C22-BF21-EAF06D767B15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAE90FD5-AAB6-4C22-BF21-EAF06D767B15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAE90FD5-AAB6-4C22-BF21-EAF06D767B15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAE90FD5-AAB6-4C22-BF21-EAF06D767B15}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4BAF51E5-E9A7-410D-A5B0-3F13337252F0}
+	EndGlobalSection
+EndGlobal
