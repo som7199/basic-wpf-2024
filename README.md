@@ -55,7 +55,7 @@ IoT 개발자 WPF 학습리포지토리
         - View : 화면, 순수 xaml로만 구성
         - ViewModel : 뷰에 대한 메서드, 액션, INotifyPropertyChanged를 구현
         
-        ![MVVM패턴]()
+        ![MVVM패턴](https://raw.githubusercontent.com/som7199/basic-wpf-2024/main/images/wpf001.png)
 
     - 권장 구현방법
         - ViewModel 생성, 알림 속성 구현
@@ -82,4 +82,4 @@ IoT 개발자 WPF 학습리포지토리
 
     - 작업(3명) 분리
         - DB 개발자 - DBMS 테이블 생성, Models에 클래스 작업
-        - Xaml 디자이너 - Views 폴더에 있는 
+        - Xaml 디자이너 - Views 폴더에 있는 xaml 파일을 디자인 작업
