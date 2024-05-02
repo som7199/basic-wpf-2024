@@ -63,10 +63,10 @@ IoT 개발자 WPF 학습리포지토리
         - Model DB작업 독립적으로 구현
 
     - MVVM 구현 도와주는 프레임워크
-        0. ~~MvvmLight.Toolkit~~ - 3rd Party 개발, 2009년부터 시작 2014년도 이후 더 이상 개발이나 지원이 없음
-        1. **Caliburn.Micro** - 3rd Party 개발, MVVM이 아주 간단 , 강력, 중소형 프로젝트에 적합, 디버깅이 조금 어려움
-        2. AvaloniaUI - 3rd Party 개발, 크로스플랫폼, 디자인은 최고
-        3. Prism - Microsoft 개발, 무지막지하게 어렵다, 대규모 프로젝트 활용      
+        1. ~~MvvmLight.Toolkit~~ - 3rd Party 개발, 2009년부터 시작 2014년도 이후 더 이상 개발이나 지원이 없음
+        2. **Caliburn.Micro** - 3rd Party 개발, MVVM이 아주 간단 , 강력, 중소형 프로젝트에 적합, 디버깅이 조금 어려움
+        3. AvaloniaUI - 3rd Party 개발, 크로스플랫폼, 디자인은 최고
+        4. Prism - Microsoft 개발, 무지막지하게 어렵다, 대규모 프로젝트 활용      
 
 - Caliburn.Micro
     1. 프로젝트 생성 후 MainWindow.xaml 삭제
@@ -79,6 +79,7 @@ IoT 개발자 WPF 학습리포지토리
     8. ViewModels 폴더에 MainViewModel.cs 클래스 생성
     9. Bootstrapper.cs에 OnStartup()에 내용을 변경
     10. Views 폴더에 MainView.xaml 생성
+
 
     - 작업(3명) 분리
         - DB 개발자 - DBMS 테이블 생성, Models에 클래스 작업
