@@ -6,7 +6,7 @@ namespace ex07_EmployeeMngApp
 {
     public class Bootstrapper : BootstrapperBase
     {
-        public Bootstrapper() 
+        public Bootstrapper()
         {
             Initialize();
         }

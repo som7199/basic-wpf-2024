@@ -5,8 +5,102 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ex07_EmployeeMngApp.Views"
         mc:Ignorable="d"
-        Title="MainView" Height="450" Width="800">
+        Height="450" Width="800">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="0" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="5*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0"
+                   Content="직원 리스트" FontSize="19"
+                   VerticalAlignment="Center" />
+
+            <DataGrid x:Name="ListEmployees" Grid.Row="1" Grid.Column="0"
+                      AutoGenerateColumns="False" IsReadOnly="True"
+                      SelectedItem="{Binding SelectedEmployee}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="아이디" Binding="{Binding Id}" Width="45"/>
+                    <DataGridTextColumn Header="사원명" Binding="{Binding EmpName}" Width="80"/>
+                    <DataGridTextColumn Header="급여" Binding="{Binding Salary}" Width="60"/>
+                    <DataGridTextColumn Header="부서명" Binding="{Binding DeptName}" Width="80"/>
+                    <DataGridTextColumn Header="주소" Binding="{Binding Addr}" Width="99"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Button x:Name="GetEmployees" Grid.Row="2" Grid.Column="0"
+                    Content="조회" 
+                    Width="150" Height="40"/>
+        </Grid>
+
+        <GroupBox Grid.Row="0" Grid.Column="1" Margin="10"
+                  Header="직원 입력항목">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0"
+                       Content="아이디" FontWeight="Bold"
+                       VerticalAlignment="Center" HorizontalAlignment="Right"
+                       Margin="10,0"/>
+                <Label Grid.Row="1" Grid.Column="0"
+                       Content="사원명" FontWeight="Bold"
+                       VerticalAlignment="Center" HorizontalAlignment="Right"
+                       Margin="10,0"/>
+                <Label Grid.Row="2" Grid.Column="0"
+                       Content="급여" FontWeight="Bold"
+                       VerticalAlignment="Center" HorizontalAlignment="Right"
+                       Margin="10,0"/>
+                <Label Grid.Row="3" Grid.Column="0"
+                       Content="부서명" FontWeight="Bold"
+                       VerticalAlignment="Center" HorizontalAlignment="Right"
+                       Margin="10,0"/>
+                <Label Grid.Row="4" Grid.Column="0"
+                       Content="주소" FontWeight="Bold"
+                       VerticalAlignment="Center" HorizontalAlignment="Right"
+                       Margin="10,0"/>
+
+                <TextBox x:Name="Id" Grid.Row="0" Grid.Column="1"
+                         VerticalAlignment="Center" IsReadOnly="True"/>
+                <TextBox x:Name="EmpName" Grid.Row="1" Grid.Column="1"
+                         VerticalAlignment="Center" />
+                <TextBox x:Name="Salary" Grid.Row="2" Grid.Column="1"
+                         VerticalAlignment="Center" />
+                <TextBox x:Name="DeptName" Grid.Row="3" Grid.Column="1"
+                         VerticalAlignment="Center" />
+                <TextBox x:Name="Addr" Grid.Row="4" Grid.Column="1"
+                         VerticalAlignment="Center" />
+
+                <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <Button x:Name="NewEmployee" Content="신규"
+                            Width="100" Height="40"/>
+                    <Button x:Name="SaveEmployee" Content="저장"
+                            Width="100" Height="40"/>
+                    <Button x:Name="DelEmployee" Content="삭제"
+                            Width="100" Height="40"/>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+
         
     </Grid>
 </Window>
