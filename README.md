@@ -108,3 +108,7 @@ IoT 개발자 WPF 학습리포지토리
             - 모든 속성에 NotifyOfPropertyChange() 메서드 존재!! (값 변경 알림)
 
     ![실행화면](https://raw.githubusercontent.com/som7199/basic-wpf-2024/main/images/wpf002.png)
+
+## 5일차
+- Caliburn.Micro + MahApps.Metro
+    - Metro(Modern UI) 디자인 접목
