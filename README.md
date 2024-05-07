@@ -110,5 +110,28 @@ IoT 개발자 WPF 학습리포지토리
     ![실행화면](https://raw.githubusercontent.com/som7199/basic-wpf-2024/main/images/wpf002.png)
 
 ## 5일차
-- Caliburn.Micro + MahApps.Metro
+- MahApps.Metro (https://mahapps.com/)
     - Metro(Modern UI) 디자인 접목
+
+    ![실행화면](https://raw.githubusercontent.com/som7199/basic-wpf-2024/main/images/wpf003.png)
+
+    ![저장화면](https://raw.githubusercontent.com/som7199/basic-wpf-2024/main/images/wpf004.png)
+
+- Movie API 연동 앱, MovieFinder 2024
+    - DB(SQLServer) 연동
+    - MahApps.Metro
+    - OpenAPI 두 가지 사용
+    - MVVM은 시간부족으로 사용 안 함
+
+    - 좋아하는 영화 즐겨찾기 앱
+    - [themoviedb.org](https://www.themoviedb.org/) OpenAPI 활용
+        - 회원가입 후 API 신청
+    - [Youtube API](https://console.cloud.google.com/) 활용
+        - 새 프로젝트 생성
+        - API 및 서비스 > 라이브러리 선택
+        - YouTube Data API v3 선택 > 사용 버튼 클릭
+        - 사용자 인증 정보 만들기 버튼 클릭
+            1. 사용자 데이터 라디오 버튼 클릭, 다음
+            2. OAuth 동의화면, 기본내용 입력 후 다음
+            3. 범위는 저장 후 계속
+            4. OAuth Client ID, 앱 유형을 데스크톱 앱, 이름 입력 후 만들기 클릭
