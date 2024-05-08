@@ -7,7 +7,7 @@
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:ex10_MovieFinder2024"
     mc:Ignorable="d"
-    Title="MovieFinder 2024" Height="580" Width="1000" MinWidth="530" MinHeight="370" FontFamily="NanumGothic">
+    Title="MovieFinder 2024" Height="580" Width="1000" MinWidth="530" MinHeight="370" FontFamily="NanumGothic" Loaded="MetroWindow_Loaded">
     <mah:MetroWindow.IconTemplate>
         <DataTemplate>
             <iconPacks:PackIconMaterial Kind="MovieStar" Margin="10,7,0,0" Foreground="White"/>
@@ -26,7 +26,7 @@
         </Grid.RowDefinitions>
         <!--바깥쪽 그리드 영역 설정 끝-->
 
-         <!--맨 위쪽 검색 영역-->
+        <!--검색 텍스트 박스와 버튼-->
         <Grid Grid.Row="0" Grid.Column="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
@@ -54,12 +54,20 @@
             </Button>
         </Grid>
 
-         <!--검색 결과 영역-->
+        <!--검색 결과 영역-->
         <DataGrid x:Name="GrdResult" Grid.Row="1" Grid.Column="0" Margin="5"
-                  IsReadOnly="True" ItemsSource="{Binding}"
+                  IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding}"
                   Style="{StaticResource MahApps.Styles.DataGrid.Azure}"
-                  SelectedCellsChanged="GrdResult_SelectedCellsChanged"/>
-        
+                  SelectedCellsChanged="GrdResult_SelectedCellsChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Title}" Header="한글제목" FontWeight="Bold" />
+                <DataGridTextColumn Binding="{Binding Original_Title}" Header="원제목"/>
+                <DataGridTextColumn Binding="{Binding Release_Date}" Header="개봉일"/>
+                <DataGridTextColumn Binding="{Binding Popularity, StringFormat={}{0:0.0}}" Header="인기도"/>
+                <DataGridTextColumn Binding="{Binding Vote_Average, StringFormat={}{0:0.0}}" Header="평점"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
         <!--포스터 영역-->
         <Grid Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
             <GroupBox Header="포스터" Margin="10"
@@ -143,5 +151,5 @@
             <StatusBarItem x:Name="StsResult"/>
         </StatusBar>
     </Grid>
-    
+
 </mah:MetroWindow>
