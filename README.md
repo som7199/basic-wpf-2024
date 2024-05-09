@@ -119,8 +119,8 @@ IoT 개발자 WPF 학습리포지토리
 
 - Movie API 연동 앱, MovieFinder 2024
     - 좋아하는 영화 즐겨찾기 앱
-    - DB(SQLServer) 연동
-    - MahApps.Metro UI
+    - SQLServer 데이터베이스 연동
+    - MahApps.Metro UI & iconPacks
     - Cefsharp WebBrowser 패키지
     - Google.Apis 패키지
     - MVVM은 시간부족으로 사용 안 함
