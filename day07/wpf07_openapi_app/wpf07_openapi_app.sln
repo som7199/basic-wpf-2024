@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ex11_Gimhae_FineDust", "ex11_Gimhae_FineDust\ex11_Gimhae_FineDust.csproj", "{9AEC8A4F-189F-4D64-899D-F7E8867123ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9AEC8A4F-189F-4D64-899D-F7E8867123ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AEC8A4F-189F-4D64-899D-F7E8867123ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AEC8A4F-189F-4D64-899D-F7E8867123ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AEC8A4F-189F-4D64-899D-F7E8867123ED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {05A971B7-A7B9-4007-AFD9-65BB8079944C}
+	EndGlobalSection
+EndGlobal

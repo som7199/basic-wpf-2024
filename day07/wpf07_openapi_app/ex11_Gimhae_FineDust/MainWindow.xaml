@@ -1,0 +1,62 @@
+﻿<mah:MetroWindow x:Class="ex11_Gimhae_FineDust.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:iconPack="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:local="clr-namespace:ex11_Gimhae_FineDust"
+        mc:Ignorable="d"
+        Title="Gimhae Finedust Check" Height="450" Width="800" MinHeight="300" MinWidth="600" Loaded="MetroWindow_Loaded">
+    <mah:MetroWindow.IconTemplate>
+        <DataTemplate>
+            <iconPack:PackIconWeatherIcons Kind="Dust" Margin="10,7,0,0" Foreground="White"/>
+        </DataTemplate>
+    </mah:MetroWindow.IconTemplate>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <!--최상단 타이틀 및 버튼 위치-->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="김해시 실시간 미세먼지 측정앱" FontSize="16" FontWeight="Bold" Margin="10"/>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="BtnReqRealtime" Content="실시간조회" Width="100" Margin="5, 10" 
+                        Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
+                        Click="BtnReqRealtime_Click"/>
+                <Button x:Name="BtnSaveData" Content="저장" Width="80" Margin="5,10"
+                        Style="{StaticResource MahApps.Styles.Button.Square.Highlight}"
+                        Click="BtnSaveData_Click"/>
+                <ComboBox x:Name="CboReqDate" Width="150" Margin="5,10,10,10"
+                          Style="{StaticResource MahApps.Styles.ComboBox}"
+                          mah:TextBoxHelper.Watermark="검색날짜 선택"
+                          mah:TextBoxHelper.UseFloatingWatermark="True"
+                          mah:TextBoxHelper.ClearTextButton="True"
+                          SelectionChanged="CboReqDate_SelectionChanged"/>
+
+            </StackPanel>
+        </Grid>
+        
+        <!--중간 데이터 그리드 영역-->
+        <DataGrid x:Name="GrdResult" Grid.Row="1" Margin="10"
+                  IsReadOnly="True" ItemsSource="{Binding}"
+                  Style="{StaticResource MahApps.Styles.DataGrid.Azure}"
+                  MouseDoubleClick="GrdResult_MouseDoubleClick"/>
+        
+        <!--맨 하단 상태바 위치-->
+        <StatusBar Grid.Row="2">
+            <StatusBarItem Content="김해시 미세먼지앱"/>
+            <Separator Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
+            <StatusBarItem x:Name="StsResult"/>
+        </StatusBar>
+    </Grid>
+</mah:MetroWindow>

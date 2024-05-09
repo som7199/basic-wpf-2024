@@ -123,6 +123,7 @@ IoT 개발자 WPF 학습리포지토리
     - MahApps.Metro UI & iconPacks
     - Cefsharp WebBrowser 패키지
     - Google.Apis 패키지
+    - NewtonSoft.Json 패키지
     - MVVM은 시간부족으로 사용 안 함
     - OpenAPI 두 가지 사용
 
@@ -153,6 +154,9 @@ IoT 개발자 WPF 학습리포지토리
 
 
 - 데이터포털 API 연동앱 예제
+    - CefSharp 사용 시 플랫폼 대상 AnyCpu에서 x64로 변경 필수!
+    - MahApps.Metro UI, IconPacks
+    - NewtonSoft.Json
     - 5월 13일 개인 프로젝트 참조소스
 
 ## 8일차
