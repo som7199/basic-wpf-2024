@@ -69,7 +69,9 @@ namespace ex10_MovieFinder2024.Models
                                                             ,@Poster_Path
                                                             ,@Overview
                                                             ,GETDATE())";
-        //public static readonly string UPDATE_QUERY = @"";
+        public static readonly string CHECK_QUERY = @"SELECT COUNT(*)
+                                                        FROM [EMS].[dbo].[MovieItem]
+                                                        WHERE Id = @Id";
         public static readonly string DELETE_QUERY = @"DELETE FROM [dbo].[MovieItem] WHERE Id = @Id";
     }
 }
