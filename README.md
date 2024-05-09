@@ -148,6 +148,10 @@ IoT 개발자 WPF 학습리포지토리
 ## 7일차
 - MovieFinder 2024 완료
 
+
+    https://github.com/som7199/basic-wpf-2024/assets/95500015/1c3ef91f-610b-49a1-bf5c-71e7b04554d1
+
+
 - 데이터포털 API 연동앱 예제
     - 5월 13일 개인 프로젝트 참조소스
 
