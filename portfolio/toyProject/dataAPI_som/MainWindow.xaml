@@ -1,0 +1,68 @@
+﻿<mah:MetroWindow
+    x:Class="dataAPI_som.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:dataAPI_som"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:iconPack="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    mc:Ignorable="d"
+    Title="식당" Height="450" Width="850" Loaded="MetroWindow_Loaded">
+    <mah:MetroWindow.IconTemplate>
+        <DataTemplate>
+            <iconPack:PackIconUnicons Kind="Restaurant" Margin="10,7,0,0" Foreground="PeachPuff"/>
+        </DataTemplate>
+    </mah:MetroWindow.IconTemplate>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <TextBox x:Name ="TxtSearch" Text="오늘은 어떤 음식이 드시고 싶으신가요?(한식, 중식, 일식 등)" HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     MouseDoubleClick="TextBox_MouseDoubleClick">
+            </TextBox>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="BtnSearch" Content="검색" Width="80" Margin="5, 10" 
+                        Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
+                        Click="BtnSearch_Click"/>
+                <Button x:Name="BtnSaveData" Content="저장" Width="80" Margin="5,10"
+                        Style="{StaticResource MahApps.Styles.Button.Square.Highlight}"
+                        Click="BtnSaveData_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row ="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+
+        <!--데이터 그리드 영역-->
+        <DataGrid x:Name="GrdResult" Grid.Row="1" Margin="10"
+                  IsReadOnly="True" ItemsSource="{Binding}"
+                  Style="{StaticResource MahApps.Styles.DataGrid.Azure}"
+                  AutoGenerateColumns="False"
+                  MouseDoubleClick="GrdResult_MouseDoubleClick">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Category}" Header="분류" FontWeight="Bold" Width="1*"/>
+                <DataGridTextColumn Binding="{Binding Name}" Header="업소명" Width="1.2*"/>
+                <DataGridTextColumn Binding="{Binding Area}" Header="지역" Width="1*"/>
+                <DataGridTextColumn Binding="{Binding Address}" Header="주소" Width="2*"/>
+                <DataGridTextColumn Binding="{Binding Content}" Header="상세정보" Width="5*"/>
+                <DataGridTextColumn Binding="{Binding Holiday}" Header="휴무일" Width="1.2*"/>
+                <DataGridTextColumn Binding="{Binding Phone}" Header="대표전화" Width="1.2*"/>
+                <DataGridTextColumn Binding="{Binding Menuprice}" Header="대표메뉴" Width="1.2*"/>
+                <!--<DataGridTextColumn Binding="{Binding Xposition}" Header="위도"/>
+                <DataGridTextColumn Binding="{Binding Yposition}" Header="경도"/>-->
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</mah:MetroWindow>
