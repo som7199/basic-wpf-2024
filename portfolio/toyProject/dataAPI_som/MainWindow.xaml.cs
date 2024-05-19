@@ -40,23 +40,76 @@ namespace dataAPI_som
         private async void BtnSearch_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             string KEY = "LzwlrU0FB%2FdPNvjFqIoL9PNTtGMGQOIOPhnpfwg5iJYcbhifORStdRaT8Ouby2D8ENMY6xGlP3yhbtRUln9UHg%3D%3D";
-            string openApiUri = $"http://www.gimhae.go.kr/openapi/tour/restaurant.do?KEY={KEY}page=5";
+            //string openApiUri = $"http://www.gimhae.go.kr/openapi/tour/restaurant.do?KEY={KEY}&page=20";
+            string openApiUri = "";
             string result = string.Empty;
 
-            // WebRequest, WebResponse 객체
+            // WebRequest, WebResponse 객체 
             WebRequest req = null;
             WebResponse res = null;
             StreamReader reader = null;
 
+            int page = 0;
+            string cats = TxtSearch.Text;
+            // 각 카테고리마다 데이터 수가 다 달라서 데이터 요청 시 페이지 개수가 틀려서 냅다 반복문을 쓸 수 없다..
+
+            switch (cats)
+            {
+                case "한식":
+                    //page = 71;
+                    page = 10;
+                    break;
+
+                case "중식":
+                    page = 4;
+                    break;
+
+                case "일식":
+                    page = 3;
+                    break;
+
+                case "양식":
+                    page = 6;
+                    break;
+
+                case "횟집":
+                    page = 3;
+                    break;
+
+                case "분식":
+                    page = 2;
+                    break;
+
+                case "퓨전":
+                    page = 1;
+                    break;
+
+                case "카페":
+                    page = 13;
+                    break;
+
+                case "기타":
+                    page = 21;
+                    break;
+            }
 
             try
             {
-                req = WebRequest.Create(openApiUri);
-                res = await req.GetResponseAsync();
-                reader = new StreamReader(res.GetResponseStream());
-                result = reader.ReadToEnd();
+                for (int i = 1; i < page; i++)
+                {
+                    openApiUri = $"http://www.gimhae.go.kr/openapi/tour/restaurant.do?KEY={KEY}&page={i}&cats={cats}";
+                    req = WebRequest.Create(openApiUri);
+                    res = await req.GetResponseAsync();
+                    reader = new StreamReader(res.GetResponseStream());
+                    result += reader.ReadToEnd();
+                }
 
-                //await this.ShowMessageAsync("결과", result);
+                //req = WebRequest.Create(openApiUri);
+                //res = await req.GetResponseAsync();
+                //reader = new StreamReader(res.GetResponseStream());
+                //result = reader.ReadToEnd();
+
+                await this.ShowMessageAsync("결과", result);
 
             }
             catch (Exception ex)
@@ -64,7 +117,7 @@ namespace dataAPI_som
                 await this.ShowMessageAsync("오류", $"OpenAPI 조회오류 {ex.Message}");
             }
 
-            var jsonResult = JObject.Parse(result);
+            var jsonResult = JObject.Parse(JsonFinialCheck(result));
             var status = Convert.ToString(jsonResult["status"]);
 
             if (status == "OK")
@@ -148,10 +201,35 @@ namespace dataAPI_som
             mapWindow.ShowDialog();
         }
 
-        private void TextBox_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void TxtSearch_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             TxtSearch.Text = "";
         }
 
+        //역직렬화 문제해결해주는 함수
+        private static string JsonFinialCheck(string msg)
+        {
+            string final = string.Empty;
+            char[] arr = msg.ToCharArray();
+
+            bool bln = true;
+            foreach (char item in arr)
+            {
+                if (bln)
+                {
+                    if (item == '}')
+                    {
+                        final += item.ToString();
+                        break;
+                    }
+                    else
+                    {
+                        final += item.ToString();
+                    }
+                }
+            }
+
+            return final;
+        }
     }
 }

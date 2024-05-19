@@ -7,7 +7,7 @@
    [Content] [nvarchar](200) NULL,
    [Holiday] [nvarchar](50) NULL,
    [Phone] [nvarchar](30) NULL,
-   [Menuprice] [nvarchar](30) NULL,
+   [MainMenu] [nvarchar](30) NULL,
    [Xposition] [float] NULL,
    [Yposition] [float] NULL,
 

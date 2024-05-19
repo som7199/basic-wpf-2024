@@ -24,7 +24,7 @@
         <Grid Grid.Row="0">
             <TextBox x:Name ="TxtSearch" Text="오늘은 어떤 음식이 드시고 싶으신가요?(한식, 중식, 일식 등)" HorizontalAlignment="Center"
                      VerticalAlignment="Center"
-                     MouseDoubleClick="TextBox_MouseDoubleClick">
+                     KeyDown="TxtSearch_KeyDown">
             </TextBox>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
@@ -58,7 +58,7 @@
                 <DataGridTextColumn Binding="{Binding Content}" Header="상세정보" Width="5*"/>
                 <DataGridTextColumn Binding="{Binding Holiday}" Header="휴무일" Width="1.2*"/>
                 <DataGridTextColumn Binding="{Binding Phone}" Header="대표전화" Width="1.2*"/>
-                <DataGridTextColumn Binding="{Binding Menuprice}" Header="대표메뉴" Width="1.2*"/>
+                <DataGridTextColumn Binding="{Binding MainMenu}" Header="대표메뉴" Width="1.2*"/>
                 <!--<DataGridTextColumn Binding="{Binding Xposition}" Header="위도"/>
                 <DataGridTextColumn Binding="{Binding Yposition}" Header="경도"/>-->
             </DataGrid.Columns>

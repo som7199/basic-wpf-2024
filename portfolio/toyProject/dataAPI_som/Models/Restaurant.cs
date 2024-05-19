@@ -13,7 +13,6 @@ namespace dataAPI_som.Models
         public string Name { get; set; }
         public string Area { get; set; }
         public string Address { get; set; }
-        //public string BusinessHour { get; set; }
         public string Content { get; set; }
         public string Holiday { get; set; }
         public string Phone { get; set; }
