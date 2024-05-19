@@ -16,7 +16,7 @@ namespace dataAPI_som.Models
         public string Content { get; set; }
         public string Holiday { get; set; }
         public string Phone { get; set; }
-        public string MainMenu { get; set; }
+        //public string MainMenu { get; set; }  // 결측치가 너무 많다..
         public double Xposition { get; set; }
         public double Yposition { get; set; }
 
@@ -28,7 +28,6 @@ namespace dataAPI_som.Models
                                                              ,[Content]
                                                              ,[Holiday]
                                                              ,[Phone]
-                                                             ,[MainMenu]
                                                              ,[Xposition]
                                                              ,[Yposition]
                                                         FROM [EMS].[dbo].[Restaurant]";
@@ -40,7 +39,6 @@ namespace dataAPI_som.Models
                                                                    ,[Content]
                                                                    ,[Holiday]
                                                                    ,[Phone]
-                                                                   ,[MainMenu]
                                                                    ,[Xposition]
                                                                    ,[Yposition])
                                                              VALUES
@@ -51,7 +49,6 @@ namespace dataAPI_som.Models
                                                                    ,@Content
                                                                    ,@Holiday
                                                                    ,@Phone
-                                                                   ,@MainMenu
                                                                    ,@Xposition
                                                                    ,@Yposition)";
     }

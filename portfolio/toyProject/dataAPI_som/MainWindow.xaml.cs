@@ -4,7 +4,6 @@ using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json.Linq;
 using System.Data;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
 
@@ -22,26 +21,16 @@ namespace dataAPI_som
 
         private void MetroWindow_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            InitComboDateFromDB();
         }
 
         private void InitComboDateFromDB()
         {
-            using (SqlConnection conn = new SqlConnection(Helpers.Common.CONNSTRING))
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(Models.Restaurant.SELECT_QUERY, conn);
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataSet dSet = new DataSet();
-                adapter.Fill(dSet);
-            }
         }
 
         private async void BtnSearch_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             string KEY = "LzwlrU0FB%2FdPNvjFqIoL9PNTtGMGQOIOPhnpfwg5iJYcbhifORStdRaT8Ouby2D8ENMY6xGlP3yhbtRUln9UHg%3D%3D";
-            //string openApiUri = $"http://www.gimhae.go.kr/openapi/tour/restaurant.do?KEY={KEY}&page=20";
-            string openApiUri = "";
+            string openApiUri;
             string result = string.Empty;
 
             // WebRequest, WebResponse 객체 
@@ -49,84 +38,90 @@ namespace dataAPI_som
             WebResponse res = null;
             StreamReader reader = null;
 
+            // 각 카테고리마다 데이터 수가 다 달라서 데이터 요청 시 페이지 개수가 틀려서 냅다 반복문을 쓸 수 없다..
             int page = 0;
             string cats = TxtSearch.Text;
-            // 각 카테고리마다 데이터 수가 다 달라서 데이터 요청 시 페이지 개수가 틀려서 냅다 반복문을 쓸 수 없다..
+            var allResults = new List<JObject>(); // JSON 결과를 저장할 리스트
 
+            // 페이지 수가 5개가 넘어가면 데이터 불러오기 실패...
             switch (cats)
             {
                 case "한식":
                     //page = 71;
-                    page = 10;
-                    break;
+                    page = 5; break;
 
                 case "중식":
-                    page = 4;
-                    break;
+                    page = 4; break;
 
                 case "일식":
-                    page = 3;
-                    break;
+                    page = 3; break;
 
                 case "양식":
-                    page = 6;
-                    break;
+                    //page = 6;
+                    page = 5; break;
 
                 case "횟집":
-                    page = 3;
-                    break;
+                    page = 3; break;
 
                 case "분식":
-                    page = 2;
-                    break;
+                    page = 2; break;
 
                 case "퓨전":
-                    page = 1;
-                    break;
+                    page = 1; break;
 
                 case "카페":
-                    page = 13;
-                    break;
+                    //page = 13;
+                    page = 5; break;
 
                 case "기타":
-                    page = 21;
-                    break;
+                    //page = 21;
+                    page = 5; break;
             }
 
             try
             {
-                for (int i = 1; i < page; i++)
+                for (int i = 1; i <= page; i++) // 페이지 1부터 시작
                 {
                     openApiUri = $"http://www.gimhae.go.kr/openapi/tour/restaurant.do?KEY={KEY}&page={i}&cats={cats}";
                     req = WebRequest.Create(openApiUri);
                     res = await req.GetResponseAsync();
                     reader = new StreamReader(res.GetResponseStream());
-                    result += reader.ReadToEnd();
+                    result = reader.ReadToEnd();
+
+                    var jsonResponse = JObject.Parse(result); // 개별 JSON 응답 파싱
+                    var status = Convert.ToString(jsonResponse["status"]);
+                    if (status == "OK")
+                    {
+                        var data = jsonResponse["results"] as JArray;
+                        foreach (var item in data)
+                        {
+                            allResults.Add(item as JObject); // 결과 리스트에 추가
+                        }
+                    }
                 }
 
-                //req = WebRequest.Create(openApiUri);
-                //res = await req.GetResponseAsync();
-                //reader = new StreamReader(res.GetResponseStream());
-                //result = reader.ReadToEnd();
+                //await this.ShowMessageAsync("결과", allResults.ToString());
 
-                await this.ShowMessageAsync("결과", result);
 
+                if (allResults.Count > 0)
+                {
+                    var jsonResultList = new JArray(allResults); // 모든 결과를 JArray로 변환
+                    //await this.ShowMessageAsync("결과", jsonResultList.ToString());
+                }
+                else
+                {
+                    await this.ShowMessageAsync("결과", "데이터가 없습니다.");
+                }
             }
             catch (Exception ex)
             {
                 await this.ShowMessageAsync("오류", $"OpenAPI 조회오류 {ex.Message}");
             }
 
-            var jsonResult = JObject.Parse(JsonFinialCheck(result));
-            var status = Convert.ToString(jsonResult["status"]);
-
-            if (status == "OK")
+            if (allResults.Count > 0)
             {
-                var data = jsonResult["results"];
-                var jsonArray = data as JArray; // json자체에서 []안에 들어간 배열데이터만 JArray 변환가능
-
                 var restaurantInfo = new List<Restaurant>();
-                foreach (var item in jsonArray)
+                foreach (var item in allResults)
                 {
                     restaurantInfo.Add(new Restaurant()
                     {
@@ -138,7 +133,6 @@ namespace dataAPI_som
                         Content = Convert.ToString(item["content"]),
                         Holiday = Convert.ToString(item["holiday"]),
                         Phone = Convert.ToString(item["phone"]),
-                        MainMenu = Convert.ToString(item["mainMenu"]),
                         Xposition = Convert.ToDouble(item["xposition"]),
                         Yposition = Convert.ToDouble(item["yposition"]),
                     });
@@ -171,7 +165,6 @@ namespace dataAPI_som
                         cmd.Parameters.AddWithValue("@Content", item.Content);
                         cmd.Parameters.AddWithValue("@Holiday", item.Holiday);
                         cmd.Parameters.AddWithValue("@Phone", item.Phone);
-                        cmd.Parameters.AddWithValue("@MainMenu", item.MainMenu);
                         cmd.Parameters.AddWithValue("@Xposition", item.Xposition);
                         cmd.Parameters.AddWithValue("@Yposition", item.Yposition);
 
@@ -188,7 +181,6 @@ namespace dataAPI_som
             {
                 await this.ShowMessageAsync("저장오류", $"저장오류 {ex.Message}");
             }
-            InitComboDateFromDB();
         }
 
         private void GrdResult_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -203,33 +195,7 @@ namespace dataAPI_som
 
         private void TxtSearch_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            TxtSearch.Text = "";
-        }
-
-        //역직렬화 문제해결해주는 함수
-        private static string JsonFinialCheck(string msg)
-        {
-            string final = string.Empty;
-            char[] arr = msg.ToCharArray();
-
-            bool bln = true;
-            foreach (char item in arr)
-            {
-                if (bln)
-                {
-                    if (item == '}')
-                    {
-                        final += item.ToString();
-                        break;
-                    }
-                    else
-                    {
-                        final += item.ToString();
-                    }
-                }
-            }
-
-            return final;
+            TxtSearch.Text = string.Empty;
         }
     }
 }
