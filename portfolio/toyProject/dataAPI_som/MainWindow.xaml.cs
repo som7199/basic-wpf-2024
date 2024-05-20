@@ -47,8 +47,8 @@ namespace dataAPI_som
             switch (cats)
             {
                 case "한식":
-                    //page = 71;
-                    page = 5; break;
+                    page = 71;
+                    break;
 
                 case "중식":
                     page = 4; break;
@@ -76,6 +76,9 @@ namespace dataAPI_som
                 case "기타":
                     //page = 21;
                     page = 5; break;
+                default:
+                    await this.ShowMessageAsync("오류", "유효하지 않은 카테고리입니다.");
+                    return;
             }
 
             try
@@ -106,7 +109,7 @@ namespace dataAPI_som
                 if (allResults.Count > 0)
                 {
                     var jsonResultList = new JArray(allResults); // 모든 결과를 JArray로 변환
-                    //await this.ShowMessageAsync("결과", jsonResultList.ToString());
+                    await this.ShowMessageAsync("결과", jsonResultList.ToString());
                 }
                 else
                 {
@@ -120,11 +123,13 @@ namespace dataAPI_som
 
             if (allResults.Count > 0)
             {
+                //int count = 0;      // 데이터 잘 넘어오는지 확인용
                 var restaurantInfo = new List<Restaurant>();
                 foreach (var item in allResults)
                 {
                     restaurantInfo.Add(new Restaurant()
                     {
+                        //Count = count++,
                         Idx = Convert.ToInt32(item["idx"]),
                         Category = Convert.ToString(item["category"]),
                         Name = Convert.ToString(item["name"]),
@@ -133,9 +138,9 @@ namespace dataAPI_som
                         Content = Convert.ToString(item["content"]),
                         Holiday = Convert.ToString(item["holiday"]),
                         Phone = Convert.ToString(item["phone"]),
-                        Xposition = Convert.ToDouble(item["xposition"]),
-                        Yposition = Convert.ToDouble(item["yposition"]),
-                    });
+                        Xposition = Convert.ToString(item["xposition"]),
+                        Yposition = Convert.ToString(item["yposition"]),
+                    }); ;
                 }
                 this.DataContext = restaurantInfo;
             }
@@ -186,8 +191,10 @@ namespace dataAPI_som
         private void GrdResult_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             var curItem = GrdResult.SelectedItem as Restaurant;
+            double Xpositoin = Convert.ToDouble(curItem.Xposition);
+            double Ypositoin = Convert.ToDouble(curItem.Yposition);
 
-            var mapWindow = new MapWindow(curItem.Xposition, curItem.Yposition);
+            var mapWindow = new MapWindow(Xpositoin, Ypositoin);
             mapWindow.Owner = this;
             //mapWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             mapWindow.ShowDialog();

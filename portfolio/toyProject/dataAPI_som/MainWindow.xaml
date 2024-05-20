@@ -51,6 +51,7 @@
                   AutoGenerateColumns="False"
                   MouseDoubleClick="GrdResult_MouseDoubleClick">
             <DataGrid.Columns>
+                <!--<DataGridTextColumn Binding="{Binding Count}" Header="번호" FontWeight="Bold" Width="1*"/>-->
                 <DataGridTextColumn Binding="{Binding Category}" Header="분류" FontWeight="Bold" Width="1*"/>
                 <DataGridTextColumn Binding="{Binding Name}" Header="업소명" Width="1.2*"/>
                 <DataGridTextColumn Binding="{Binding Area}" Header="지역" Width="1*"/>
