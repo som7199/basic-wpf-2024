@@ -109,7 +109,7 @@ namespace dataAPI_som
                 if (allResults.Count > 0)
                 {
                     var jsonResultList = new JArray(allResults); // 모든 결과를 JArray로 변환
-                    await this.ShowMessageAsync("결과", jsonResultList.ToString());
+                    //await this.ShowMessageAsync("결과", jsonResultList.ToString());
                 }
                 else
                 {

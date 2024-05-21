@@ -8,7 +8,7 @@
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:iconPack="http://metro.mahapps.com/winfx/xaml/iconpacks"
     mc:Ignorable="d"
-    Title="식당" Height="450" Width="850" Loaded="MetroWindow_Loaded">
+    Title="KIMHAE RESTAURANT" Height="450" Width="850" Loaded="MetroWindow_Loaded">
     <mah:MetroWindow.IconTemplate>
         <DataTemplate>
             <iconPack:PackIconUnicons Kind="Restaurant" Margin="10,7,0,0" Foreground="PeachPuff"/>
@@ -22,16 +22,16 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <TextBox x:Name ="TxtSearch" Text="오늘은 어떤 음식이 드시고 싶으신가요?(한식|중식|일식|양식|횟집|분식|퓨전|카페|기타)" Width="480" Margin="10"
-                     VerticalAlignment="Center"
+            <TextBox x:Name ="TxtSearch" Text="오늘은 어떤 음식이 드시고 싶으신가요? (한식|중식|일식|양식|횟집|분식|퓨전|카페|기타)" Width="600" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25, 0, 0, 0"
                      KeyDown="TxtSearch_KeyDown">
             </TextBox>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button x:Name="BtnSearch" Content="검색" Width="80" Margin="5, 10" 
+                <Button x:Name="BtnSearch" Content="식당 검색" Width="100" Margin="5, 10" 
                         Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
                         Click="BtnSearch_Click"/>
-                <Button x:Name="BtnSaveData" Content="저장" Width="80" Margin="5,10"
+                <Button x:Name="BtnSaveData" Content="즐겨찾기" Width="100" Margin="5,10"
                         Style="{StaticResource MahApps.Styles.Button.Square.Highlight}"
                         Click="BtnSaveData_Click"/>
             </StackPanel>
