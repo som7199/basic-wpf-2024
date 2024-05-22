@@ -1,4 +1,4 @@
-﻿using dataAPI_som.Models;
+using dataAPI_som.Models;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Data.SqlClient;
@@ -25,10 +25,7 @@ namespace dataAPI_som
 
         private void MetroWindow_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-        }
-
-        private void InitComboDateFromDB()
-        {
+            TxtSearch.Focus();
         }
 
         private async void BtnSearch_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -48,8 +45,7 @@ namespace dataAPI_som
             int page = 0;
             string cats = TxtSearch.Text;
             var allResults = new List<JObject>(); // JSON 결과를 저장할 리스트
-
-            // 페이지 수가 5개가 넘어가면 데이터 불러오기 실패...
+ 
             switch (cats)
             {
                 case "한식":
@@ -63,8 +59,8 @@ namespace dataAPI_som
                     page = 3; break;
 
                 case "양식":
-                    //page = 6;
-                    page = 5; break;
+                    page = 6;
+                    break;
 
                 case "횟집":
                     page = 3; break;
@@ -76,12 +72,12 @@ namespace dataAPI_som
                     page = 1; break;
 
                 case "카페":
-                    //page = 13;
-                    page = 5; break;
+                    page = 13;
+                    break;
 
                 case "기타":
-                    //page = 21;
-                    page = 5; break;
+                    page = 21;
+                    break;
                 default:
                     await this.ShowMessageAsync("오류", "유효하지 않은 카테고리입니다.");
                     return;
@@ -153,47 +149,47 @@ namespace dataAPI_som
             }
         }
 
-        private async void BtnSaveData_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            if (GrdResult.Items.Count == 0)
-            {
-                await this.ShowMessageAsync("저장 오류", "검색 후 저장하십시오");
-            }
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(Helpers.Common.CONNSTRING))
-                {
-                    conn.Open();
+        //private async void BtnSaveData_Click(object sender, System.Windows.RoutedEventArgs e)
+        //{
+        //    if (GrdResult.Items.Count == 0)
+        //    {
+        //        await this.ShowMessageAsync("저장 오류", "검색 후 저장하십시오");
+        //    }
+        //    try
+        //    {
+        //        using (SqlConnection conn = new SqlConnection(Helpers.Common.CONNSTRING))
+        //        {
+        //            conn.Open();
 
-                    var insRes = 0;
-                    foreach (Restaurant item in GrdResult.Items)
-                    {
-                        SqlCommand cmd = new SqlCommand(Models.Restaurant.INSERT_QUERY, conn);
-                        cmd.Parameters.AddWithValue("@Idx", item.Idx);
-                        cmd.Parameters.AddWithValue("@Category", item.Category);
-                        cmd.Parameters.AddWithValue("@Name", item.Name);
-                        cmd.Parameters.AddWithValue("@Area", item.Area);
-                        cmd.Parameters.AddWithValue("@Address", item.Address);
-                        cmd.Parameters.AddWithValue("@Content", item.Content);
-                        cmd.Parameters.AddWithValue("@Holiday", item.Holiday);
-                        cmd.Parameters.AddWithValue("@Phone", item.Phone);
-                        cmd.Parameters.AddWithValue("@Xposition", item.Xposition);
-                        cmd.Parameters.AddWithValue("@Yposition", item.Yposition);
+        //            var insRes = 0;
+        //            foreach (Restaurant item in GrdResult.Items)
+        //            {
+        //                SqlCommand cmd = new SqlCommand(Models.Restaurant.INSERT_QUERY, conn);
+        //                cmd.Parameters.AddWithValue("@Idx", item.Idx);
+        //                cmd.Parameters.AddWithValue("@Category", item.Category);
+        //                cmd.Parameters.AddWithValue("@Name", item.Name);
+        //                cmd.Parameters.AddWithValue("@Area", item.Area);
+        //                cmd.Parameters.AddWithValue("@Address", item.Address);
+        //                cmd.Parameters.AddWithValue("@Content", item.Content);
+        //                cmd.Parameters.AddWithValue("@Holiday", item.Holiday);
+        //                cmd.Parameters.AddWithValue("@Phone", item.Phone);
+        //                cmd.Parameters.AddWithValue("@Xposition", item.Xposition);
+        //                cmd.Parameters.AddWithValue("@Yposition", item.Yposition);
 
-                        insRes += cmd.ExecuteNonQuery();
-                    }
+        //                insRes += cmd.ExecuteNonQuery();
+        //            }
 
-                    if (insRes > 0)
-                    {
-                        await this.ShowMessageAsync("저장", "DB 저장 성공!");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                await this.ShowMessageAsync("저장오류", $"저장오류 {ex.Message}");
-            }
-        }
+        //            if (insRes > 0)
+        //            {
+        //                await this.ShowMessageAsync("저장", "DB 저장 성공!");
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        await this.ShowMessageAsync("저장오류", $"저장오류 {ex.Message}");
+        //    }
+        //}
 
         private void GrdResult_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
@@ -203,7 +199,6 @@ namespace dataAPI_som
 
             var mapWindow = new MapWindow(Xpositoin, Ypositoin);
             mapWindow.Owner = this;
-            //mapWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             mapWindow.ShowDialog();
         }
 
@@ -277,11 +272,54 @@ namespace dataAPI_som
             {
                 await this.ShowMessageAsync("오류", $"즐겨찾기 오류 {ex.Message}");
             }
+            BtnViewFavorite_Click(sender, e);   // 저장 후 저장된 즐겨찾기 바로보기
         }
 
-        private void BtnViewFavorite_Click(object sender, System.Windows.RoutedEventArgs e)
+        // 즐겨찾기한 식당만 보이기! => ComboBox에서 분류별로 볼 수 있도록 해주기!
+        private async void BtnViewFavorite_Click(object sender, System.Windows.RoutedEventArgs e)
         {
+            this.DataContext = null;    // 데이터그리드에 보낸 데이터 모두 삭제
+            TxtSearch.Text = string.Empty;
 
+            List<Restaurant> favRestaurants = new List<Restaurant>();
+
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(Helpers.Common.CONNSTRING))
+                {
+                    conn.Open();
+
+                    var cmd = new SqlCommand(Models.Restaurant.SELECT_QUERY, conn);
+                    var adapter = new SqlDataAdapter(cmd);
+                    var dSet = new DataSet();
+                    adapter.Fill(dSet, "Restaurant");
+
+                    foreach (DataRow row in dSet.Tables["Restaurant"].Rows)
+                    {
+                        var restaurant = new Restaurant()
+                        {
+                            Idx = Convert.ToInt32(row["Idx"]),
+                            Category = Convert.ToString(row["Category"]),
+                            Name = Convert.ToString(row["Name"]),
+                            Area = Convert.ToString(row["Area"]),
+                            Address = Convert.ToString(row["Address"]),
+                            Content = Convert.ToString(row["Content"]),
+                            Holiday = Convert.ToString(row["Holiday"]),
+                            Phone = Convert.ToString(row["Phone"]),
+                            Xposition = Convert.ToString(row["Xposition"]),
+                            Yposition = Convert.ToString(row["Yposition"]),
+                        };
+                        favRestaurants.Add(restaurant);
+                    }
+                    this.DataContext = favRestaurants;
+                    isFavorite = true;
+                    StsResult.Content = $"즐겨찾기 {favRestaurants.Count}건 조회완료";
+                }
+            }
+            catch (Exception ex)
+            {
+                await this.ShowMessageAsync("오류", $"즐겨찾기 조회 오류{ex.Message}");
+            }
         }
     }
 }
