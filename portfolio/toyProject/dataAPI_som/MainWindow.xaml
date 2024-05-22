@@ -1,4 +1,4 @@
-﻿<mah:MetroWindow
+<mah:MetroWindow
     x:Class="dataAPI_som.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -22,7 +22,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <TextBox x:Name ="TxtSearch" Text="오늘은 어떤 음식이 드시고 싶으신가요? (한식|중식|일식|양식|횟집|분식|퓨전|카페|기타)" Width="600" 
+            <TextBox x:Name ="TxtSearch" Text="오늘은 어떤 음식이 드시고 싶으신가요? (한식|중식|일식|양식|횟집|분식|퓨전|카페|기타)" Width="480" 
                      HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25, 0, 0, 0"
                      KeyDown="TxtSearch_KeyDown">
             </TextBox>
@@ -31,9 +31,16 @@
                 <Button x:Name="BtnSearch" Content="식당 검색" Width="100" Margin="5, 10" 
                         Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
                         Click="BtnSearch_Click"/>
-                <Button x:Name="BtnSaveData" Content="저장" Width="100" Margin="5,10"
+                <Button x:Name="BtnAddFavorite" Content="즐겨찾기 추가" Width="100" Margin="5, 10"
                         Style="{StaticResource MahApps.Styles.Button.Square.Highlight}"
-                        Click="BtnSaveData_Click"/>
+                        Background="{DynamicResource MahApps.Brushes.Accent2}"
+                        Click="BtnAddFavorite_Click"/>
+                <ComboBox x:Name="CboReqDate" Width="110" Margin="5,10"
+                          Style="{StaticResource MahApps.Styles.ComboBox}"
+                          mah:TextBoxHelper.Watermark="즐겨찾기 보기"
+                          mah:TextBoxHelper.UseFloatingWatermark="True"
+                          mah:TextBoxHelper.ClearTextButton="False"
+                          />
             </StackPanel>
         </Grid>
 
@@ -65,17 +72,6 @@
             </StatusBar.Background>
             <StatusBarItem Content="Kimhae Restaurant OpenAPI App"/>
             <Separator Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button x:Name="BtnAddFavorite" Content="즐겨찾기 추가" Width="100" Margin="5, 0"
-                        Style="{StaticResource MahApps.Styles.Button.Square.Highlight}"
-                        HorizontalAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource MahApps.Brushes.Accent2}"
-                        Click="BtnAddFavorite_Click"/>
-                
-                <Button x:Name="BtnViewFavorite" Content="즐겨찾기 보기" Width="100" Margin="5, 0"
-                        Style="{StaticResource MahApps.Styles.Button.Square.Highlight}" 
-                        HorizontalAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource MahApps.Brushes.Accent2}"
-                        Click="BtnViewFavorite_Click"/>
-            </StackPanel>
             <StatusBarItem x:Name="StsResult"/>
         </StatusBar>
     </Grid>
