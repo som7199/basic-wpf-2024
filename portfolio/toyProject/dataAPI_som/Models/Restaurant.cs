@@ -8,7 +8,7 @@ namespace dataAPI_som.Models
 {
     public class Restaurant
     {
-        //public int Count { get; set; }     // 데이터 잘 넘어오나 확인용
+        //public int Count { get; set; }     // 데이터 조회 건수 확인용
         public int Idx { get; set; }
         public string? Category {  get; set; }
         public string? Name { get; set; }
@@ -52,5 +52,8 @@ namespace dataAPI_som.Models
                                                                    ,@Phone
                                                                    ,@Xposition
                                                                    ,@Yposition)";
+        public static readonly string CHECK_QUERY = @"SELECT COUNT(*)
+                                                        FROM [EMS].[dbo].[Restaurant]
+                                                        WHERE Idx = @Idx";
     }
 }

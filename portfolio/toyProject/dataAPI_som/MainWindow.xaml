@@ -31,17 +31,10 @@
                 <Button x:Name="BtnSearch" Content="식당 검색" Width="100" Margin="5, 10" 
                         Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
                         Click="BtnSearch_Click"/>
-                <Button x:Name="BtnSaveData" Content="즐겨찾기" Width="100" Margin="5,10"
+                <Button x:Name="BtnSaveData" Content="저장" Width="100" Margin="5,10"
                         Style="{StaticResource MahApps.Styles.Button.Square.Highlight}"
                         Click="BtnSaveData_Click"/>
             </StackPanel>
-        </Grid>
-
-        <Grid Grid.Row ="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
         </Grid>
 
         <!--데이터 그리드 영역-->
@@ -65,5 +58,25 @@
             </DataGrid.Columns>
         </DataGrid>
 
+        <!--맨 하단 상태바 위치-->
+        <StatusBar Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+            <StatusBar.Background>
+                <SolidColorBrush Color="{DynamicResource MahApps.Colors.Accent3}"/>
+            </StatusBar.Background>
+            <StatusBarItem Content="Kimhae Restaurant OpenAPI App"/>
+            <Separator Style="{StaticResource MahApps.Styles.Separator.StatusBar}"/>
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="BtnAddFavorite" Content="즐겨찾기 추가" Width="100" Margin="5, 0"
+                        Style="{StaticResource MahApps.Styles.Button.Square.Highlight}"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource MahApps.Brushes.Accent2}"
+                        Click="BtnAddFavorite_Click"/>
+                
+                <Button x:Name="BtnViewFavorite" Content="즐겨찾기 보기" Width="100" Margin="5, 0"
+                        Style="{StaticResource MahApps.Styles.Button.Square.Highlight}" 
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource MahApps.Brushes.Accent2}"
+                        Click="BtnViewFavorite_Click"/>
+            </StackPanel>
+            <StatusBarItem x:Name="StsResult"/>
+        </StatusBar>
     </Grid>
 </mah:MetroWindow>

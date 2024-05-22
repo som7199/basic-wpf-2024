@@ -4,6 +4,7 @@ using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json.Linq;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 
@@ -14,6 +15,9 @@ namespace dataAPI_som
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        // flag값
+        private bool isFavorite = false;    // 즐겨찾기인지 API로 검색한건지 false => openAPI, true => 즐겨찾기 보기
+
         public MainWindow()
         {
             InitializeComponent();
@@ -29,6 +33,8 @@ namespace dataAPI_som
 
         private async void BtnSearch_Click(object sender, System.Windows.RoutedEventArgs e)
         {
+            isFavorite = false;         // 검색은 즐겨찾기 보기가 아님!
+
             string KEY = "LzwlrU0FB%2FdPNvjFqIoL9PNTtGMGQOIOPhnpfwg5iJYcbhifORStdRaT8Ouby2D8ENMY6xGlP3yhbtRUln9UHg%3D%3D";
             string openApiUri;
             string result = string.Empty;
@@ -123,13 +129,13 @@ namespace dataAPI_som
 
             if (allResults.Count > 0)
             {
-                //int count = 0;      // 데이터 잘 넘어오는지 확인용
+                //int count = 0;      // 데이터 개수 (조회 건수)
                 var restaurantInfo = new List<Restaurant>();
                 foreach (var item in allResults)
                 {
                     restaurantInfo.Add(new Restaurant()
                     {
-                        //Count = count++,
+                        //Count = count++,    // 데이터 잘 넘어오는지 확인
                         Idx = Convert.ToInt32(item["idx"]),
                         Category = Convert.ToString(item["category"]),
                         Name = Convert.ToString(item["name"]),
@@ -143,6 +149,7 @@ namespace dataAPI_som
                     }); ;
                 }
                 this.DataContext = restaurantInfo;
+                StsResult.Content = $"{restaurantInfo.Count}건 조회 완료";
             }
         }
 
@@ -176,7 +183,7 @@ namespace dataAPI_som
                         insRes += cmd.ExecuteNonQuery();
                     }
 
-                    if(insRes > 0)
+                    if (insRes > 0)
                     {
                         await this.ShowMessageAsync("저장", "DB 저장 성공!");
                     }
@@ -203,6 +210,78 @@ namespace dataAPI_som
         private void TxtSearch_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             TxtSearch.Text = string.Empty;
+        }
+
+        // 즐겨찾기한 식당 DB 저장
+        private async void BtnAddFavorite_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (GrdResult.SelectedItems.Count == 0)
+            {
+                await this.ShowMessageAsync("즐겨찾기", "추가할 식당을 선택하세요(복수 선택 가능)");
+                return;
+            }
+
+            if (isFavorite == true)     // 즐겨찾기 보기 한 뒤 이미 즐겨찾기한 식당을 다시 즐겨찾기 하려고 할 때 막기 위함!
+            {
+                await this.ShowMessageAsync("즐겨찾기", "이미 즐겨찾기한 식당입니다!");
+                return;
+            }
+
+            var addRestaurants = new List<Restaurant>();
+            foreach (Restaurant item in GrdResult.SelectedItems)
+            {
+                addRestaurants.Add(item);
+            }
+
+            Debug.WriteLine(addRestaurants.Count);
+            try
+            {
+                var insRes = 0;
+                using (SqlConnection conn = new SqlConnection(Helpers.Common.CONNSTRING))
+                {
+                    conn.Open();
+
+                    foreach (Restaurant item in addRestaurants)
+                    {
+                        // 저장하기 전 이미 저장된 데이터인지 확인
+                        SqlCommand chkCmd = new SqlCommand(Restaurant.CHECK_QUERY, conn);
+                        chkCmd.Parameters.AddWithValue("@Idx", item.Idx);
+                        var cnt = Convert.ToInt32(chkCmd.ExecuteScalar());  // COUNT(*) 등의 1row, 1column 값을 리턴할 때
+                        if (cnt == 1) continue; // 이미 데이터가 있으면 패스!
+
+                        SqlCommand cmd = new SqlCommand(Models.Restaurant.INSERT_QUERY, conn);
+                        cmd.Parameters.AddWithValue("@Idx", item.Idx);
+                        cmd.Parameters.AddWithValue("@Category", item.Category);
+                        cmd.Parameters.AddWithValue("@Name", item.Name);
+                        cmd.Parameters.AddWithValue("@Area", item.Area);
+                        cmd.Parameters.AddWithValue("@Address", item.Address);
+                        cmd.Parameters.AddWithValue("@Content", item.Content);
+                        cmd.Parameters.AddWithValue("@Holiday", item.Holiday);
+                        cmd.Parameters.AddWithValue("@Phone", item.Phone);
+                        cmd.Parameters.AddWithValue("@Xposition", item.Xposition);
+                        cmd.Parameters.AddWithValue("@Yposition", item.Yposition);
+
+                        insRes += cmd.ExecuteNonQuery();    // 데이터 하나마다 INSERT 쿼리 실행
+                    }
+                }
+                if (insRes == addRestaurants.Count)
+                {
+                    await this.ShowMessageAsync("즐겨찾기", $"즐겨찾기 {insRes}건 저장 성공!");
+                }
+                else
+                {
+                    await this.ShowMessageAsync("즐겨찾기", $"즐겨찾기 {addRestaurants.Count}건 중 {insRes}건 저장 성공!");
+                }
+            }
+            catch (Exception ex)
+            {
+                await this.ShowMessageAsync("오류", $"즐겨찾기 오류 {ex.Message}");
+            }
+        }
+
+        private void BtnViewFavorite_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+
         }
     }
 }
