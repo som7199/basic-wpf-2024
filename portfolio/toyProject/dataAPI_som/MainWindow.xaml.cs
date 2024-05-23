@@ -1,4 +1,4 @@
-﻿using dataAPI_som.Models;
+using dataAPI_som.Models;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Data.SqlClient;
@@ -325,7 +325,48 @@ namespace dataAPI_som
 
         private async void CboViewFavorite_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
+            this.DataContext = null;    // 데이터그리드에 보낸 데이터 모두 삭제
+            TxtSearch.Text = string.Empty;
 
+            List<Restaurant> favRestaurants = new List<Restaurant>();
+
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(Helpers.Common.CONNSTRING))
+                {
+                    conn.Open();
+
+                    var cmd = new SqlCommand(Models.Restaurant.SELECT_QUERY, conn);
+                    var adapter = new SqlDataAdapter(cmd);
+                    var dSet = new DataSet();
+                    adapter.Fill(dSet, "Restaurant");
+
+                    foreach (DataRow row in dSet.Tables["Restaurant"].Rows)
+                    {
+                        var restaurant = new Restaurant()
+                        {
+                            Idx = Convert.ToInt32(row["Idx"]),
+                            Category = Convert.ToString(row["Category"]),
+                            Name = Convert.ToString(row["Name"]),
+                            Area = Convert.ToString(row["Area"]),
+                            Address = Convert.ToString(row["Address"]),
+                            Content = Convert.ToString(row["Content"]),
+                            Holiday = Convert.ToString(row["Holiday"]),
+                            Phone = Convert.ToString(row["Phone"]),
+                            Xposition = Convert.ToString(row["Xposition"]),
+                            Yposition = Convert.ToString(row["Yposition"]),
+                        };
+                        favRestaurants.Add(restaurant);
+                    }
+                    this.DataContext = favRestaurants;
+                    isFavorite = true;
+                    StsResult.Content = $"즐겨찾기 {favRestaurants.Count}건 조회완료";
+                }
+            }
+            catch (Exception ex)
+            {
+                await this.ShowMessageAsync("오류", $"즐겨찾기 조회 오류{ex.Message}");
+            }
         }
     }
 }
