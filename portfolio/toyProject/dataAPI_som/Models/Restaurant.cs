@@ -21,6 +21,18 @@ namespace dataAPI_som.Models
         public string? Xposition { get; set; }
         public string? Yposition { get; set; }
 
+        //public static readonly string SELECT_QUERY = @"SELECT [Idx]
+        //                                                     ,[Category]
+        //                                                     ,[Name]
+        //                                                     ,[Area]
+        //                                                     ,[Address]
+        //                                                     ,[Content]
+        //                                                     ,[Holiday]
+        //                                                     ,[Phone]
+        //                                                     ,[Xposition]
+        //                                                     ,[Yposition]
+        //                                                FROM [EMS].[dbo].[Restaurant]";
+
         public static readonly string SELECT_QUERY = @"SELECT [Idx]
                                                              ,[Category]
                                                              ,[Name]
@@ -31,7 +43,15 @@ namespace dataAPI_som.Models
                                                              ,[Phone]
                                                              ,[Xposition]
                                                              ,[Yposition]
-                                                        FROM [EMS].[dbo].[Restaurant]";
+                                                        FROM Restaurant
+                                                        WHERE Idx IN (
+	                                                    SELECT Idx 
+	                                                        FROM (SELECT ROW_NUMBER() OVER (PARTITION BY [Name] ORDER BY Idx DESC) A, Idx 
+		                                                            FROM Restaurant
+			                                                        ) B
+                                                            WHERE A = 1
+	                                                        )";
+
         public static readonly string INSERT_QUERY = @"INSERT INTO [dbo].[Restaurant]
                                                                    ([Category]
                                                                    ,[Name]
@@ -52,8 +72,34 @@ namespace dataAPI_som.Models
                                                                    ,@Phone
                                                                    ,@Xposition
                                                                    ,@Yposition)";
+        
+        //public static readonly string CHECK_QUERY = @"SELECT COUNT(*)
+        //                                                FROM [EMS].[dbo].[Restaurant]
+        //                                                WHERE Idx = @Idx";
+
         public static readonly string CHECK_QUERY = @"SELECT COUNT(*)
                                                         FROM [EMS].[dbo].[Restaurant]
-                                                        WHERE Idx = @Idx";
+                                                        WHERE Name = @Name";
+
+        public static readonly string DISTINCT_QUERY = @"SELECT [Idx]
+                                                               ,[Category]
+                                                               ,[Name]
+                                                               ,[Area]
+                                                               ,[Address]
+                                                               ,[Content]
+                                                               ,[Holiday]
+                                                               ,[Phone]
+                                                               ,[Xposition]
+                                                               ,[Yposition] 
+                                                           FROM Restaurant
+                                                          WHERE Idx IN (
+	                                                                    SELECT Idx 
+	                                                                    FROM (SELECT ROW_NUMBER() OVER (PARTITION BY [Name] ORDER BY Idx DESC) A, Idx 
+		                                                                        FROM Restaurant
+	                                                                            WHERE Category = @Category
+			                                                                    ) B
+                                                                        WHERE A = 1
+	                                                                    )";
+
     }
 }
