@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Runtime.CompilerServices;
+using System.Windows.Controls;
 
 namespace dataAPI_som
 {
@@ -276,7 +277,7 @@ namespace dataAPI_som
             BtnViewFavorite_Click(sender, e);   // 저장 후 저장된 즐겨찾기 바로보기
         }
 
-        // 즐겨찾기한 식당만 보이기! => ComboBox에서 분류별로 볼 수 있도록 해주기!
+        // 즐겨찾기한 식당만 보이기!
         private async void BtnViewFavorite_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             this.DataContext = null;    // 데이터그리드에 보낸 데이터 모두 삭제
@@ -323,7 +324,17 @@ namespace dataAPI_som
             }
         }
 
+        // 카테고리별 즐겨찾기 추가한 식당 보이기
         private async void CboViewFavorite_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            var selectedCategory = (e.AddedItems[0] as ComboBoxItem)?.Content.ToString();
+            if (!string.IsNullOrEmpty(selectedCategory))
+            {
+                showFavoriteRestaurant(selectedCategory);
+            }
+        }
+
+        private async void showFavoriteRestaurant(string cate)
         {
             this.DataContext = null;    // 데이터그리드에 보낸 데이터 모두 삭제
             TxtSearch.Text = string.Empty;
@@ -332,32 +343,33 @@ namespace dataAPI_som
 
             try
             {
-                using(SqlConnection conn = new SqlConnection(Helpers.Common.CONNSTRING))
+                using (SqlConnection conn = new SqlConnection(Helpers.Common.CONNSTRING))
                 {
                     conn.Open();
 
-                    var cmd = new SqlCommand(Models.Restaurant.SELECT_QUERY, conn);
-                    var adapter = new SqlDataAdapter(cmd);
-                    var dSet = new DataSet();
-                    adapter.Fill(dSet, "Restaurant");
+                    SqlCommand cmd = new SqlCommand(Models.Restaurant.SELECT_DISTINCT_QUERY, conn);
+                    cmd.Parameters.AddWithValue("@Category", cate); // @ Category 매개변수 추가
 
-                    foreach (DataRow row in dSet.Tables["Restaurant"].Rows)
+                    var reader = await cmd.ExecuteReaderAsync();    // 비동기적으로 데이터 읽기
+                    while (await reader.ReadAsync())                // 각 행을 읽어서 Restaurant 객체 생성 후 리스트에 추가
                     {
                         var restaurant = new Restaurant()
                         {
-                            Idx = Convert.ToInt32(row["Idx"]),
-                            Category = Convert.ToString(row["Category"]),
-                            Name = Convert.ToString(row["Name"]),
-                            Area = Convert.ToString(row["Area"]),
-                            Address = Convert.ToString(row["Address"]),
-                            Content = Convert.ToString(row["Content"]),
-                            Holiday = Convert.ToString(row["Holiday"]),
-                            Phone = Convert.ToString(row["Phone"]),
-                            Xposition = Convert.ToString(row["Xposition"]),
-                            Yposition = Convert.ToString(row["Yposition"]),
+                            Idx = reader.GetInt32(reader.GetOrdinal("Idx")),
+                            Category = reader.GetString(reader.GetOrdinal("Category")),
+                            Name = reader.GetString(reader.GetOrdinal("Name")),
+                            Area = reader.GetString(reader.GetOrdinal("Area")),
+                            Address = reader.GetString(reader.GetOrdinal("Address")),
+                            Content = reader.GetString(reader.GetOrdinal("Content")),
+                            Holiday = reader.GetString(reader.GetOrdinal("Holiday")),
+                            Phone = reader.GetString(reader.GetOrdinal("Phone")),
+                            Xposition = reader.GetString(reader.GetOrdinal("Xposition")),
+                            Yposition = reader.GetString(reader.GetOrdinal("Yposition")),
                         };
                         favRestaurants.Add(restaurant);
                     }
+
+                    reader.Close();
                     this.DataContext = favRestaurants;
                     isFavorite = true;
                     StsResult.Content = $"즐겨찾기 {favRestaurants.Count}건 조회완료";
@@ -365,7 +377,7 @@ namespace dataAPI_som
             }
             catch (Exception ex)
             {
-                await this.ShowMessageAsync("오류", $"즐겨찾기 조회 오류{ex.Message}");
+                await this.ShowMessageAsync("오류", $"즐겨찾기 조회 오류: {ex.Message}");
             }
         }
     }

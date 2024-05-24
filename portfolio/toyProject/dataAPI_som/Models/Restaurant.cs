@@ -72,16 +72,12 @@ namespace dataAPI_som.Models
                                                                    ,@Phone
                                                                    ,@Xposition
                                                                    ,@Yposition)";
-        
-        //public static readonly string CHECK_QUERY = @"SELECT COUNT(*)
-        //                                                FROM [EMS].[dbo].[Restaurant]
-        //                                                WHERE Idx = @Idx";
 
         public static readonly string CHECK_QUERY = @"SELECT COUNT(*)
                                                         FROM [EMS].[dbo].[Restaurant]
                                                         WHERE Name = @Name";
 
-        public static readonly string DISTINCT_QUERY = @"SELECT [Idx]
+        public static readonly string SELECT_DISTINCT_QUERY = @"SELECT [Idx]
                                                                ,[Category]
                                                                ,[Name]
                                                                ,[Area]
