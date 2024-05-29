@@ -8,7 +8,8 @@
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:iconPack="http://metro.mahapps.com/winfx/xaml/iconpacks"
     mc:Ignorable="d"
-    Title="KIMHAE RESTAURANT" Height="450" Width="850" Loaded="MetroWindow_Loaded">
+    WindowState="Maximized"
+    Title="KIMHAE RESTAURANT" Height="450" Width="900" Loaded="MetroWindow_Loaded">
     <mah:MetroWindow.IconTemplate>
         <DataTemplate>
             <iconPack:PackIconUnicons Kind="Restaurant" Margin="10,7,0,0" Foreground="PeachPuff"/>
@@ -26,9 +27,10 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <TextBox Grid.Row="0" Grid.Column="0" x:Name ="TxtSearch" Text="오늘은 어떤 음식이 드시고 싶으신가요? (한식|중식|일식|양식|횟집|분식|퓨전|카페|기타)" 
+        <TextBox Grid.Row="0" Grid.Column="0" x:Name ="TxtSearch" Text="오늘은 어떤 음식이 드시고 싶으신가요?(한식|중식|일식|양식|횟집|분식|퓨전|카페|기타)" 
                  HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="20, 0, 0, 0"
-                 KeyDown="TxtSearch_KeyDown" FontFamily="NanumGothicCoding" />
+                 MouseDoubleClick="TxtSearch_MouseDoubleClick"
+                 KeyDown="TxtSearch_KeyDown" FontFamily="NanumGothicCoding" Cursor="Hand" />
 
         <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button x:Name="BtnSearch" Content="식당 검색" Width="100" Margin="5, 10" FontFamily="NanumGothicCoding"
@@ -38,12 +40,12 @@
                     Style="{StaticResource MahApps.Styles.Button.Square.Highlight}"
                     Background="{DynamicResource MahApps.Brushes.Accent2}"
                     Click="BtnAddFavorite_Click"/>
-            <ComboBox x:Name="CboViewFavorite" Width="120" Margin="5,10"
+            <ComboBox x:Name="CboViewFavorite" Width="120" Margin="5, 10"
                       Style="{StaticResource MahApps.Styles.ComboBox}"
                       mah:TextBoxHelper.Watermark="즐겨찾기 보기" FontFamily="NanumGothicCoding"
                       mah:TextBoxHelper.UseFloatingWatermark="True"
                       mah:TextBoxHelper.ClearTextButton="False"
-                      SelectionChanged="CboViewFavorite_SelectionChanged">
+                      SelectionChanged="CboViewFavorite_SelectionChanged" Background="{DynamicResource MahApps.Brushes.Button.Square.Background.MouseOver}">
                 <ComboBoxItem Name="Item1" Content="한식"/>
                 <ComboBoxItem Name="Item2" Content="중식"/>
                 <ComboBoxItem Name="Item3" Content="일식"/>
@@ -65,10 +67,32 @@
             <DataGrid.Columns>
                 <!--<DataGridTextColumn Binding="{Binding Count}" Header="번호" FontWeight="Bold" Width="1*"/>-->
                 <DataGridTextColumn Binding="{Binding Category}" Header="분류" FontWeight="Bold" Width="1*"/>
-                <DataGridTextColumn Binding="{Binding Name}" Header="업소명" Width="1.2*"/>
+                <DataGridTextColumn Binding="{Binding Name}" Header="업소명" Width="1.2*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                            <Setter Property="ToolTip" Value="{Binding Content}"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Area}" Header="지역" Width="1*"/>
-                <DataGridTextColumn Binding="{Binding Address}" Header="주소" Width="2*"/>
-                <DataGridTextColumn Binding="{Binding Content}" Header="상세정보" Width="5*"/>
+                <DataGridTextColumn Binding="{Binding Address}" Header="주소" Width="2*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                            <Setter Property="ToolTip" Value="{Binding Content}"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Content}" Header="상세정보" Width="5*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                            <Setter Property="ToolTip" Value="{Binding Content}"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
                 <DataGridTextColumn Binding="{Binding Holiday}" Header="휴무일" Width="1.2*"/>
                 <DataGridTextColumn Binding="{Binding Phone}" Header="대표전화" Width="1.2*"/>
                 <!--<DataGridTextColumn Binding="{Binding MainMenu}" Header="대표메뉴" Width="1.2*"/>-->

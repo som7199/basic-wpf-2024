@@ -8,6 +8,7 @@
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPack="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d"
+        WindowState="Maximized"
         Title="MapWindow" Height="450" Width="800">
     <mah:MetroWindow.IconTemplate>
         <DataTemplate>

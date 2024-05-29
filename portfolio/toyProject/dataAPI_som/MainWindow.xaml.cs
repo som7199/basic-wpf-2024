@@ -9,6 +9,7 @@ using System.IO;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace dataAPI_som
 {
@@ -43,7 +44,7 @@ namespace dataAPI_som
             WebResponse res = null;
             StreamReader reader = null;
 
-            // 각 카테고리마다 데이터 수가 다 달라서 데이터 요청 시 페이지 개수가 틀려서 냅다 반복문을 쓸 수 없다..
+            // 각 카테고리마다 데이터 수가 다 달라서 데이터 요청 시 페이지 개수가 틀리기 때문에 반복문 사용X
             int page = 0;
             string cats = TxtSearch.Text;
             var allResults = new List<JObject>(); // JSON 결과를 저장할 리스트
@@ -55,23 +56,28 @@ namespace dataAPI_som
                     break;
 
                 case "중식":
-                    page = 4; break;
+                    page = 4; 
+                    break;
 
                 case "일식":
-                    page = 3; break;
+                    page = 3; 
+                    break;
 
                 case "양식":
                     page = 6;
                     break;
 
                 case "횟집":
-                    page = 3; break;
+                    page = 3; 
+                    break;
 
                 case "분식":
-                    page = 2; break;
+                    page = 2; 
+                    break;
 
                 case "퓨전":
-                    page = 1; break;
+                    page = 1; 
+                    break;
 
                 case "카페":
                     page = 13;
@@ -80,6 +86,7 @@ namespace dataAPI_som
                 case "기타":
                     page = 21;
                     break;
+
                 default:
                     await this.ShowMessageAsync("오류", "유효하지 않은 카테고리입니다.");
                     return;
@@ -108,7 +115,6 @@ namespace dataAPI_som
                 }
 
                 //await this.ShowMessageAsync("결과", allResults.ToString());
-
 
                 if (allResults.Count > 0)
                 {
@@ -151,62 +157,28 @@ namespace dataAPI_som
             }
         }
 
-        //private async void BtnSaveData_Click(object sender, System.Windows.RoutedEventArgs e)
-        //{
-        //    if (GrdResult.Items.Count == 0)
-        //    {
-        //        await this.ShowMessageAsync("저장 오류", "검색 후 저장하십시오");
-        //    }
-        //    try
-        //    {
-        //        using (SqlConnection conn = new SqlConnection(Helpers.Common.CONNSTRING))
-        //        {
-        //            conn.Open();
-
-        //            var insRes = 0;
-        //            foreach (Restaurant item in GrdResult.Items)
-        //            {
-        //                SqlCommand cmd = new SqlCommand(Models.Restaurant.INSERT_QUERY, conn);
-        //                cmd.Parameters.AddWithValue("@Idx", item.Idx);
-        //                cmd.Parameters.AddWithValue("@Category", item.Category);
-        //                cmd.Parameters.AddWithValue("@Name", item.Name);
-        //                cmd.Parameters.AddWithValue("@Area", item.Area);
-        //                cmd.Parameters.AddWithValue("@Address", item.Address);
-        //                cmd.Parameters.AddWithValue("@Content", item.Content);
-        //                cmd.Parameters.AddWithValue("@Holiday", item.Holiday);
-        //                cmd.Parameters.AddWithValue("@Phone", item.Phone);
-        //                cmd.Parameters.AddWithValue("@Xposition", item.Xposition);
-        //                cmd.Parameters.AddWithValue("@Yposition", item.Yposition);
-
-        //                insRes += cmd.ExecuteNonQuery();
-        //            }
-
-        //            if (insRes > 0)
-        //            {
-        //                await this.ShowMessageAsync("저장", "DB 저장 성공!");
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        await this.ShowMessageAsync("저장오류", $"저장오류 {ex.Message}");
-        //    }
-        //}
-
         private void GrdResult_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             var curItem = GrdResult.SelectedItem as Restaurant;
-            double Xpositoin = Convert.ToDouble(curItem.Xposition);
-            double Ypositoin = Convert.ToDouble(curItem.Yposition);
+            double Xposition = Convert.ToDouble(curItem.Xposition);
+            double Yposition = Convert.ToDouble(curItem.Yposition);
 
-            var mapWindow = new MapWindow(Xpositoin, Ypositoin);
+            var mapWindow = new MapWindow(Xposition, Yposition);
             mapWindow.Owner = this;
             mapWindow.ShowDialog();
         }
 
-        private void TxtSearch_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void TxtSearch_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             TxtSearch.Text = string.Empty;
+        }
+
+        private void TxtSearch_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                BtnSearch_Click(sender, e);     // 검색 버튼 클릭 이벤트 핸들러 실행
+            }
         }
 
         // 즐겨찾기한 식당 DB 저장
@@ -240,7 +212,7 @@ namespace dataAPI_som
 
                     foreach (Restaurant item in addRestaurants)
                     {
-                        // 저장하기 전 이미 저장된 데이터인지 확인
+                        // 저장하기 전 이미 저장된 데이터인지 확인(식당 이름으로 확인)
                         SqlCommand chkCmd = new SqlCommand(Restaurant.CHECK_QUERY, conn);
                         chkCmd.Parameters.AddWithValue("@Name", item.Name);
                         var cnt = Convert.ToInt32(chkCmd.ExecuteScalar());  // COUNT(*) 등의 1row, 1column 값을 리턴할 때
@@ -380,5 +352,6 @@ namespace dataAPI_som
                 await this.ShowMessageAsync("오류", $"즐겨찾기 조회 오류: {ex.Message}");
             }
         }
+
     }
 }
