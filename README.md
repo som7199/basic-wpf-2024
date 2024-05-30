@@ -181,4 +181,5 @@ IoT 개발자 WPF 학습리포지토리
         SqlCommand chkCmd = new SqlCommand(Restaurant.CHECK_QUERY, conn);
         chkCmd.Parameters.AddWithValue("@Name", item.Name);
         ```
+        
   	https://github.com/som7199/basic-wpf-2024/assets/95500015/6f1cebe1-3915-4b7c-8065-a32672e00a7e
