@@ -13,6 +13,6 @@ namespace dataAPI_som.Helpers
                                                     "Persist Security Info=True;" +
                                                     "User ID=ems_user;" +
                                                     "Encrypt=False;" +
-                                                    "Password=ems_p@ss";
+                                                    "Password=mssql_p@ss";
     }
 }
